@@ -21,6 +21,7 @@ export const useApi = <T>(fetcher: Fetcher<T>, body?: any): Response<T> => {
         setData(result);
         setError(undefined);
       } catch (error: any) {
+        console.error(error);
         setError(error.message);
         setData(undefined);
       } finally {
@@ -29,7 +30,7 @@ export const useApi = <T>(fetcher: Fetcher<T>, body?: any): Response<T> => {
     };
 
     fetchData();
-  }, [fetcher, body]);
+  }, [fetcher]);
 
   return { data, error, isLoading };
 };

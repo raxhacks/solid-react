@@ -21,7 +21,7 @@ type EmployeesResponse = {
 
 type EmployeeGalleryProps = {}
 const EmployeeGallery: React.FC<EmployeeGalleryProps> = () => {
-  const { data, isLoading, error } = useApi<EmployeesResponse>(getEmployees);
+  const { data, isLoading, error } = useApi<EmployeesResponse>(getEmployees, {user:1});
   const [employees, setEmployees] = useState<EmployeeStruct[] | undefined>([]);
   useEffect(() => { setEmployees(data?.data)}, [data]);
   return (
