@@ -6,7 +6,9 @@ type Response<T> = {
   isLoading: boolean;
 };
 
-export const useApi = <T>(fetcher: () => Promise<T>): Response<T> => {
+type Fetcher<T> = (body?: any) => Promise<T>;
+
+export const useApi = <T>(fetcher: Fetcher<T>, body?: any): Response<T> => {
   const [data, setData] = useState<T | undefined>(undefined);
   const [error, setError] = useState<string | undefined>(undefined);
   const [isLoading, setIsLoading] = useState<boolean>(true);
@@ -15,11 +17,11 @@ export const useApi = <T>(fetcher: () => Promise<T>): Response<T> => {
     const fetchData = async () => {
       setIsLoading(true);
       try {
-        const result = await fetcher();
+        const result = await fetcher(body);
         setData(result);
         setError(undefined);
       } catch (error: any) {
-        setError("error.message");
+        setError(error.message);
         setData(undefined);
       } finally {
         setIsLoading(false);
@@ -27,7 +29,7 @@ export const useApi = <T>(fetcher: () => Promise<T>): Response<T> => {
     };
 
     fetchData();
-  }, [fetcher]);
+  }, [fetcher, body]);
 
   return { data, error, isLoading };
 };
